@@ -1,0 +1,32 @@
+{
+    "BTC_INDEXER_URL": "https://mempool.space/api",
+    "CHAIN_PARAMS": {
+        "44787": {
+            "ETH_CLIENT_URL": "https://alfajores-forno.celo-testnet.org",
+            "TB_ADDRESS": "0xfb8cf1e65b8d5a699ffa86235941319d44156701"
+        },
+        "23295": {
+            "ETH_CLIENT_URL": "https://testnet.sapphire.oasis.io",
+            "TB_ADDRESS": "0x07105F2BFf5297352F5d7012aD1D9D49a54BDE9E"
+        },
+        "48899":{
+                "ETH_CLIENT_URL": "https://zircuit1-testnet.p2pify.com",
+                "TB_ADDRESS": "0x6FD83f25F7DFe95e1e4d5f7cee9a85f1938e0E5D"
+        },
+        "84532":{
+                "ETH_CLIENT_URL": "https://base-sepolia.gateway.tenderly.co",
+                "TB_ADDRESS": "0x6FD83f25F7DFe95e1e4d5f7cee9a85f1938e0E5D"
+        },
+        "2442":{
+                "ETH_CLIENT_URL": "https://rpc.cardona.zkevm-rpc.com",
+                "TB_ADDRESS": "0x6FD83f25F7DFe95e1e4d5f7cee9a85f1938e0E5D"
+        }
+    },
+    "DEFAULT_CHAIN": "44787",
+    "DISCORD_WEBHOOK": "",
+    "SERVER_PORT": "6960",
+    "SP1_PROVER": "network",
+    "SP1_PRIVATE_KEY": "<>",
+    "RUST_LOG": "info",
+    "PRIV_KEY_HEX": "<>"
+}

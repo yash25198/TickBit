@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/hex"
 	"math/big"
+	"strings"
 	"time"
 
 	"github.com/crema-labs/sxg-go/internal/handler"
@@ -19,6 +20,8 @@ type btcRelay struct {
 	btcIndexer          bitcoin.IndexerClient
 	tbClient            ethereum.TBClient
 	sp1Handler          *handler.HandleProofRequest
+	defaultChain        string
+	chainList           []string
 	logger              *zap.Logger
 }
 
@@ -31,6 +34,8 @@ func NewBTCRelay(ctx context.Context,
 	btcIndexer bitcoin.IndexerClient,
 	tbClient ethereum.TBClient,
 	lastRegisteredBlock uint64,
+	defaultChain string,
+	chainList []string,
 	sp1Handler *handler.HandleProofRequest,
 	logger *zap.Logger) BTCRelay {
 
@@ -40,6 +45,8 @@ func NewBTCRelay(ctx context.Context,
 		lastRegisteredBlock: lastRegisteredBlock,
 		btcIndexer:          btcIndexer,
 		tbClient:            tbClient,
+		defaultChain:        defaultChain,
+		chainList:           chainList,
 		sp1Handler:          sp1Handler,
 		logger:              logger,
 	}
@@ -47,7 +54,11 @@ func NewBTCRelay(ctx context.Context,
 }
 
 func (b *btcRelay) Start() {
-	b.lastRegisteredBlock = b.tbClient.LastResgisteredBlock()
+	var err error
+	if b.lastRegisteredBlock, err = b.tbClient.LastResgisteredBlock(b.defaultChain); err != nil {
+		b.logger.Error("error getting last registered block", zap.Error(err))
+		return
+	}
 	newBlockChan, err := b.btcIndexer.SubscribeToLatestBlocks(context.Background(), b.pollInterval)
 	if err != nil {
 		panic(err)
@@ -77,6 +88,10 @@ func (b *btcRelay) Start() {
 							time.Sleep(2 * time.Second)
 							continue
 						default:
+							if strings.Contains(err.Error(), "proof request already exists, try getting status") {
+								b.logger.Warn("proof request already exists", zap.Uint64("blockNumber", newBlock.BlockNumber))
+								break proofRequest
+							}
 							b.logger.Error("error generating proof request", zap.Error(err))
 							return
 						}
@@ -101,9 +116,11 @@ func (b *btcRelay) Start() {
 					if err != nil {
 						b.logger.Error("error encoding proof", zap.Error(err))
 					}
-					err = b.tbClient.VerifyBlock(context.Background(), big.NewInt(int64(newBlock.BlockNumber)), newBlock.Header, proof)
-					if err != nil {
-						b.logger.Error("error verifying block", zap.Error(err))
+					for _, chain := range b.chainList {
+						err = b.tbClient.VerifyBlock(context.Background(), chain, big.NewInt(int64(newBlock.BlockNumber)), newBlock.Header, proof)
+						if err != nil {
+							b.logger.Error("error verifying block", zap.Error(err), zap.String("chain", chain))
+						}
 					}
 				}()
 

@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"time"
 
+	"github.com/crema-labs/sxg-go/cmd/utils"
 	"github.com/crema-labs/sxg-go/internal/handler"
 	"github.com/crema-labs/sxg-go/pkg/bitcoin"
 	btcrelay "github.com/crema-labs/sxg-go/pkg/btc-relay"
@@ -16,35 +16,8 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"golang.org/x/exp/maps"
 )
-
-type Env struct {
-	SuccinctPivKey string
-	PrivKeyHex     string
-	BtcIndexerUrl  string
-	EthClientUrl   string
-	DiscordWebhook string
-	TBAddress      common.Address
-}
-
-func LookupEnv(k string) string {
-	v, ok := os.LookupEnv(k)
-	if !ok {
-		panic(fmt.Errorf("environment variable %s is not set", k))
-	}
-	return v
-}
-
-func Getenv() Env {
-	return Env{
-		PrivKeyHex:     LookupEnv("PRIV_KEY"),
-		BtcIndexerUrl:  LookupEnv("BTC_INDEXER_URL"),
-		EthClientUrl:   LookupEnv("ETH_CLIENT_URL"),
-		DiscordWebhook: LookupEnv("DISCORD_WEBHOOK"),
-		TBAddress:      common.HexToAddress(LookupEnv("TB_ADDRESS")),
-		SuccinctPivKey: LookupEnv("SP1_PRIVATE_KEY"),
-	}
-}
 
 func GetAlertLogger(discordHookUrl, service string) *zap.Logger {
 	logconfig := zap.NewProductionEncoderConfig()
@@ -69,16 +42,26 @@ func GetAlertLogger(discordHookUrl, service string) *zap.Logger {
 }
 
 func main() {
-	env := Getenv()
+	env := utils.Getenv()
+	os.Setenv("RUST_LOG", "info")
+	os.Setenv("SP1_PROVER", "network")
 	logger := GetAlertLogger(env.DiscordWebhook, "BTCRelay")
 	privKey, err := crypto.HexToECDSA(env.PrivKeyHex)
 	if err != nil {
 		panic(err)
 	}
 	btcIndexer := bitcoin.NewElectrsIndexerClient(logger.With(zap.String("sub-service", "btcindexer")), env.BtcIndexerUrl, 10*time.Second)
-	ethClient, err := ethereum.NewClient(logger, env.EthClientUrl)
-	if err != nil {
-		panic(err)
+	cp := make(map[string]ethereum.ChainParams)
+	for chain, params := range env.ChainParams {
+		ethClient, err := ethereum.NewClient(logger, params.EthClientUrl)
+		if err != nil {
+			panic(err)
+		}
+		cp[chain] = ethereum.ChainParams{
+			TBAddress: common.HexToAddress(params.TBAddress),
+			EthClient: ethClient,
+		}
+
 	}
 
 	sp1handler := handler.HandleProofRequest{
@@ -86,7 +69,7 @@ func main() {
 		Logger:  logger.With(zap.String("sub-service", "handler")),
 	}
 
-	tbClient := ethereum.NewTBClient(ethClient, privKey, env.TBAddress, logger.With(zap.String("sub-service", "spvclient")))
-	relay := btcrelay.NewBTCRelay(context.Background(), 2*time.Second, btcIndexer, tbClient, 0, &sp1handler, logger)
+	tbClient := ethereum.NewTBClient(cp, privKey, logger.With(zap.String("sub-service", "spvclient")))
+	relay := btcrelay.NewBTCRelay(context.Background(), 2*time.Second, btcIndexer, tbClient, 0, env.DefaultChain, maps.Keys(cp), &sp1handler, logger)
 	relay.Start()
 }

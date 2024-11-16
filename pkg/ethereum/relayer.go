@@ -15,19 +15,18 @@ import (
 const MaxQueryBlockRange = 1000
 
 type tickbitClient struct {
-	ethClient    EthClient
-	signer       *ecdsa.PrivateKey
-	tickbitAddr  common.Address
-	logger       *zap.Logger
-	tickContract TickBit.TickBit
+	signer        *ecdsa.PrivateKey
+	logger        *zap.Logger
+	tickContracts map[string]TickBit.TickBit
+	chainParams   map[string]ChainParams
 }
 
 type TBClient interface {
-	LastResgisteredBlock() uint64
-	VerifyBlock(ctx context.Context, blockNumber *big.Int, header []byte, proof []byte) error
-	IsRegistered(ctx context.Context, blockNumber *big.Int) (bool, error)
-	GetBets(ctx context.Context, bn *big.Int) ([]TickBit.TickBitBetPlaced, error)
-	GetPoolValue(ctx context.Context, bn *big.Int) (Pool, error)
+	LastResgisteredBlock(chain string) (uint64, error)
+	VerifyBlock(ctx context.Context, chain string, blockNumber *big.Int, header []byte, proof []byte) error
+	IsRegistered(ctx context.Context, chain string, blockNumber *big.Int) (bool, error)
+	GetBets(ctx context.Context, chain string, bn *big.Int) ([]TickBit.TickBitBetPlaced, error)
+	GetPoolValue(ctx context.Context, chain string, bn *big.Int) (Pool, error)
 }
 
 type Pool struct {
@@ -35,33 +34,48 @@ type Pool struct {
 	SettledAt    *big.Int
 }
 
-func NewTBClient(ethClient EthClient, signer *ecdsa.PrivateKey, addr common.Address, logger *zap.Logger) TBClient {
-	tickContract, err := TickBit.NewTickBit(addr, ethClient.GetProvider())
-	if err != nil {
-		panic(err)
+type ChainParams struct {
+	TBAddress common.Address
+	EthClient EthClient
+}
+
+func NewTBClient(cp map[string]ChainParams, signer *ecdsa.PrivateKey, logger *zap.Logger) TBClient {
+
+	tickContracts := make(map[string]TickBit.TickBit)
+	for k, v := range cp {
+		tickContract, err := TickBit.NewTickBit(v.TBAddress, v.EthClient.GetProvider())
+		if err != nil {
+			panic(err)
+		}
+		tickContracts[k] = *tickContract
 	}
 	return &tickbitClient{
-		ethClient:    ethClient,
-		signer:       signer,
-		tickbitAddr:  addr,
-		tickContract: *tickContract,
-		logger:       logger,
+		signer:        signer,
+		tickContracts: tickContracts,
+		logger:        logger,
+		chainParams:   cp,
 	}
 }
 
-func (c *tickbitClient) LastResgisteredBlock() uint64 {
-	latestBlock, err := c.tickContract.LatestBlock(c.ethClient.CallOpts())
+func (c *tickbitClient) LastResgisteredBlock(chain string) (uint64, error) {
+
+	ethClient, contract, err := c.getChainParams(chain)
 	if err != nil {
-		c.logger.Error(err.Error())
-		return 0
+		return 0, err
 	}
-	return latestBlock.Uint64()
+
+	latestBlock, err := contract.LatestBlock(ethClient.CallOpts())
+	if err != nil {
+		c.logger.Error("error getting latest block", zap.Error(err))
+		return 0, err
+	}
+	return latestBlock.Uint64(), nil
 }
-func (c *tickbitClient) GetAddress() common.Address {
-	return c.tickbitAddr
+func (c *tickbitClient) GetAddress(chain string) common.Address {
+	return c.chainParams[chain].TBAddress
 }
-func (c *tickbitClient) VerifyBlock(ctx context.Context, blockNumber *big.Int, header []byte, proof []byte) error {
-	isActive, err := c.IsRegistered(ctx, blockNumber)
+func (c *tickbitClient) VerifyBlock(ctx context.Context, chain string, blockNumber *big.Int, header []byte, proof []byte) error {
+	isActive, err := c.IsRegistered(ctx, chain, blockNumber)
 	if err != nil {
 		return err
 	}
@@ -70,15 +84,21 @@ func (c *tickbitClient) VerifyBlock(ctx context.Context, blockNumber *big.Int, h
 		return nil
 	}
 
-	opts, err := c.ethClient.GetTransactOpts(c.signer)
+	ethClient, contract, err := c.getChainParams(chain)
 	if err != nil {
 		return err
 	}
-	tx, err := c.tickContract.VerifyAndSettleBlock(opts, blockNumber, header, proof)
+
+	opts, err := ethClient.GetTransactOpts(c.signer)
 	if err != nil {
 		return err
 	}
-	txHash, err := c.ethClient.WaitMined(ctx, tx)
+
+	tx, err := contract.VerifyAndSettleBlock(opts, blockNumber, header, proof)
+	if err != nil {
+		return err
+	}
+	txHash, err := ethClient.WaitMined(ctx, tx)
 	if err != nil {
 		return err
 	}
@@ -87,8 +107,14 @@ func (c *tickbitClient) VerifyBlock(ctx context.Context, blockNumber *big.Int, h
 	return nil
 }
 
-func (c *tickbitClient) IsRegistered(ctx context.Context, blockNumber *big.Int) (bool, error) {
-	header, err := c.tickContract.VerifiedBlocks(c.ethClient.CallOpts(), blockNumber)
+func (c *tickbitClient) IsRegistered(ctx context.Context, chain string, blockNumber *big.Int) (bool, error) {
+
+	ethClient, contract, err := c.getChainParams(chain)
+	if err != nil {
+		return false, err
+	}
+
+	header, err := contract.VerifiedBlocks(ethClient.CallOpts(), blockNumber)
 	if err != nil {
 		return false, err
 	}
@@ -97,8 +123,13 @@ func (c *tickbitClient) IsRegistered(ctx context.Context, blockNumber *big.Int) 
 	return false, err
 }
 
-func (c *tickbitClient) GetBets(ctx context.Context, bn *big.Int) ([]TickBit.TickBitBetPlaced, error) {
-	evt, err := c.tickContract.FilterBetPlaced(nil, nil, []*big.Int{bn})
+func (c *tickbitClient) GetBets(ctx context.Context, chain string, bn *big.Int) ([]TickBit.TickBitBetPlaced, error) {
+	contract, ok := c.tickContracts[chain]
+	if !ok {
+		return nil, fmt.Errorf("GetBets : contract not found")
+	}
+
+	evt, err := contract.FilterBetPlaced(nil, nil, []*big.Int{bn})
 	if err != nil {
 		return nil, err
 	}
@@ -112,6 +143,20 @@ func (c *tickbitClient) GetBets(ctx context.Context, bn *big.Int) ([]TickBit.Tic
 	return evnts, nil
 }
 
-func (c *tickbitClient) GetPoolValue(ctx context.Context, bn *big.Int) (Pool, error) {
-	return c.tickContract.Pools(c.ethClient.CallOpts(), bn)
+func (c *tickbitClient) GetPoolValue(ctx context.Context, chain string, bn *big.Int) (Pool, error) {
+	ethClient, contract, err := c.getChainParams(chain)
+	if err != nil {
+		return Pool{}, err
+	}
+	return contract.Pools(ethClient.CallOpts(), bn)
+}
+
+func (c *tickbitClient) getChainParams(chain string) (EthClient, TickBit.TickBit, error) {
+	cp, ok := c.chainParams[chain]
+	if !ok {
+		return nil, TickBit.TickBit{}, fmt.Errorf("getChainParams : chain not found")
+	}
+
+	return cp.EthClient, c.tickContracts[chain], nil
+
 }

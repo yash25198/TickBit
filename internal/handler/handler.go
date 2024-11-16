@@ -136,7 +136,15 @@ func (hp *HandleProofRequest) HandleDeets(c *gin.Context) {
 		return
 	}
 
-	bets, err := hp.TBClient.GetBets(c, bn)
+	chain := strings.ToLower(c.Query("chain"))
+	if chain == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "chain is required",
+		})
+		return
+	}
+
+	bets, err := hp.TBClient.GetBets(c, chain, bn)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -144,7 +152,7 @@ func (hp *HandleProofRequest) HandleDeets(c *gin.Context) {
 		return
 	}
 
-	pool, err := hp.TBClient.GetPoolValue(c, bn)
+	pool, err := hp.TBClient.GetPoolValue(c, chain, bn)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -233,7 +241,7 @@ func (hp *HandleProofRequest) GenerateProofRequest(req ProofRequest) (string, er
 	reqidStr := getReqId(req.BlockNumber)
 
 	if err := validateProofRequest(req, reqidStr); err != nil {
-		return "", err
+		return reqidStr, err
 	}
 
 	sourceUrl := `https://btc.cryptoid.info/btc/block.dws?` + strconv.FormatUint(req.BlockNumber, 10)
