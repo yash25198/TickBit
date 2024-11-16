@@ -6,7 +6,7 @@ export function truncateAddress(address: `0x${string}`) {
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
-export const chainIdToName = (chainId: number): `${string}/` => {
+export const chainIdToLink = (chainId: number): `${string}/` => {
     switch (chainId) {
         case 44_787:
             return "https://celo-alfajores.blockscout.com/";
@@ -16,8 +16,12 @@ export const chainIdToName = (chainId: number): `${string}/` => {
             return "https://evm-testnet.flowscan.io/";
         case 84_532:
             return "https://base-sepolia.blockscout.com/";
+        case 534_351:
+            return "https://scroll-sepolia.blockscout.com/";
         case 1_442:
             return "https://explorer-ui.cardona.zkevm-rpc.com/";
+        case 2_810:
+            return "https://explorer-holesky.morphl2.io/";
         default:
             throw new Error("unreachable code");
     }

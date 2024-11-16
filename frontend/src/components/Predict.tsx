@@ -187,7 +187,7 @@ const Predict = () => {
             data,
         };
 
-        await walletClient.sendTransaction({
+        const txHash = await walletClient.sendTransaction({
             ...transactionRequest,
             account: wallet.address as `0x${string}`,
         });
@@ -198,6 +198,8 @@ const Predict = () => {
                 {
                     Timestamps: timestamps,
                     Addr: wallet.address as `0x${string}`,
+                    PlacedAt: Date.now(),
+                    Raw: { transactionHash: txHash },
                 },
             ];
         });

@@ -27,9 +27,9 @@ export const networks = [
         contractAddress: "0xfb8cf1e65b8d5a699ffa86235941319d44156701",
     },
     {
-        ...scrollSepolia, 
-        contractAddress: "0xfb8cf1e65b8d5a699ffa86235941319d44156701",   
-    }
+        ...scrollSepolia,
+        contractAddress: "0xfb8cf1e65b8d5a699ffa86235941319d44156701",
+    },
     {
         ...polygonZkEvmTestnet,
         contractAddress: "0xfb8cf1e65b8d5a699ffa86235941319d44156701",

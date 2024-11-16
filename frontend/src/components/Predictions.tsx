@@ -1,4 +1,4 @@
-import { formatDate } from "date-fns";
+import { formatDate, formatDistanceToNow } from "date-fns";
 import {
     Table,
     TableBody,
@@ -7,7 +7,7 @@ import {
     TableHeader,
     TableRow,
 } from "../@/components/ui/table";
-import { truncateAddress } from "../utils";
+import { chainIdToLink, truncateAddress } from "../utils";
 import { useBitcoin } from "../providers/bitcoin";
 
 export type Prediction = {
@@ -22,11 +22,19 @@ type UsablePrediction = {
     amount: number;
     timestamp1: number;
     timestamp2: number;
+    timestamp: number;
+    txHash: string;
 };
 
 const Predictions = () => {
-    const { predictions, currentTip, blocks, predictionBlockIndex, tokenInfo } =
-        useBitcoin();
+    const {
+        predictions,
+        currentTip,
+        blocks,
+        predictionBlockIndex,
+        tokenInfo,
+        chainId,
+    } = useBitcoin();
 
     const isPreviousBlock =
         (currentTip?.height || 0) >=
@@ -43,6 +51,8 @@ const Predictions = () => {
             address: prediction.Addr,
             timestamp1: prediction.timestamps[0],
             timestamp2: prediction.timestamps[prediction.timestamps.length - 1],
+            timestamp: prediction.PlacedAt,
+            txHash: prediction.Raw.transactionHash,
         }));
 
     return (
@@ -85,6 +95,20 @@ const Predictions = () => {
                                                         prediction.address
                                                     )}
                                                 </span>
+                                                <a
+                                                    className="text-[#433C53] text-sm"
+                                                    href={
+                                                        chainIdToLink(chainId) +
+                                                        `tx/${prediction.txHash}`
+                                                    }
+                                                >
+                                                    {formatDistanceToNow(
+                                                        new Date(
+                                                            prediction.timestamp
+                                                        ),
+                                                        { addSuffix: true }
+                                                    )}
+                                                </a>
                                             </div>
                                             <p className="text-sm ">
                                                 Predicted:{" "}
