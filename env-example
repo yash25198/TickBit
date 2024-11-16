@@ -1,0 +1,8 @@
+BTC_INDEXER_URL=https://mempool.space/api
+ETH_CLIENT_URL=https://alfajores-forno.celo-testnet.org 
+DISCORD_WEBHOOK=""
+TB_ADDRESS=0xdFCa7F4aC82a722A0dd444e420619A90fC9ABA65
+SERVER_PORT=6960
+SP1_PROVER=network
+SP1_PRIVATE_KEY=""
+RUST_LOG=info

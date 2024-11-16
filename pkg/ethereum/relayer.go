@@ -26,6 +26,13 @@ type TBClient interface {
 	LastResgisteredBlock() uint64
 	VerifyBlock(ctx context.Context, blockNumber *big.Int, header []byte, proof []byte) error
 	IsRegistered(ctx context.Context, blockNumber *big.Int) (bool, error)
+	GetBets(ctx context.Context, bn *big.Int) ([]TickBit.TickBitBetPlaced, error)
+	GetPoolValue(ctx context.Context, bn *big.Int) (Pool, error)
+}
+
+type Pool struct {
+	AcruedAmount *big.Int
+	SettledAt    *big.Int
 }
 
 func NewTBClient(ethClient EthClient, signer *ecdsa.PrivateKey, addr common.Address, logger *zap.Logger) TBClient {
@@ -88,4 +95,23 @@ func (c *tickbitClient) IsRegistered(ctx context.Context, blockNumber *big.Int) 
 
 	fmt.Println(len(header.MerkleRootHash), header.MerkleRootHash, header)
 	return false, err
+}
+
+func (c *tickbitClient) GetBets(ctx context.Context, bn *big.Int) ([]TickBit.TickBitBetPlaced, error) {
+	evt, err := c.tickContract.FilterBetPlaced(nil, nil, []*big.Int{bn})
+	if err != nil {
+		return nil, err
+	}
+
+	var evnts []TickBit.TickBitBetPlaced
+
+	for evt.Next() {
+		evnts = append(evnts, *evt.Event)
+	}
+
+	return evnts, nil
+}
+
+func (c *tickbitClient) GetPoolValue(ctx context.Context, bn *big.Int) (Pool, error) {
+	return c.tickContract.Pools(c.ethClient.CallOpts(), bn)
 }
