@@ -41,7 +41,7 @@ type TickBitBlockHeader struct {
 
 // TickBitMetaData contains all meta data concerning the TickBit contract.
 var TickBitMetaData = &bind.MetaData{
-	ABI: "[{\"type\":\"constructor\",\"inputs\":[{\"name\":\"_token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"_verifier\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"_Px\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"_Py\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"_tickSize\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"Px\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"Py\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"bet\",\"inputs\":[{\"name\":\"timestamps\",\"type\":\"uint256[]\",\"internalType\":\"uint256[]\"},{\"name\":\"blockNumber\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"blockBets\",\"inputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[{\"name\":\"bettedAt\",\"type\":\"uint96\",\"internalType\":\"uint96\"},{\"name\":\"bettor\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"blockTimestamps\",\"inputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"convertToBigEndian\",\"inputs\":[{\"name\":\"bytesLE\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"pure\"},{\"type\":\"function\",\"name\":\"convertToBytes32\",\"inputs\":[{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"pure\"},{\"type\":\"function\",\"name\":\"doubleHash\",\"inputs\":[{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"pure\"},{\"type\":\"function\",\"name\":\"latestBlock\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"parseBlockHeader\",\"inputs\":[{\"name\":\"blockHeader\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"parsedHeader\",\"type\":\"tuple\",\"internalType\":\"structTickBit.BlockHeader\",\"components\":[{\"name\":\"merkleRootHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"nBits\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"nonce\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"previousBlockHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"timestamp\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"version\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"}]}],\"stateMutability\":\"pure\"},{\"type\":\"function\",\"name\":\"pools\",\"inputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[{\"name\":\"acruedAmount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"settledAt\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"tickSize\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"token\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"contractERC20\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"verifiedBlocks\",\"inputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[{\"name\":\"merkleRootHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"nBits\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"nonce\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"previousBlockHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"timestamp\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"version\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"verifier\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"contractSXGVerifier\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"verifyAndSettleBlock\",\"inputs\":[{\"name\":\"blockNumber\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"blockHeader\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"proof\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"verifyBlock\",\"inputs\":[{\"name\":\"blockNumber\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"blockHeader\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"proof\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"header\",\"type\":\"tuple\",\"internalType\":\"structTickBit.BlockHeader\",\"components\":[{\"name\":\"merkleRootHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"nBits\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"nonce\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"previousBlockHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"timestamp\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"version\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"}]}],\"stateMutability\":\"view\"},{\"type\":\"event\",\"name\":\"BetPlaced\",\"inputs\":[{\"name\":\"addr\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"blockNumber\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"timestamps\",\"type\":\"uint256[]\",\"indexed\":false,\"internalType\":\"uint256[]\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false}]",
+	ABI: "[{\"type\":\"constructor\",\"inputs\":[{\"name\":\"_token\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"_verifier\",\"type\":\"address\",\"internalType\":\"address\"},{\"name\":\"_Px\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"_Py\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"_tickSize\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"Px\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"Py\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"bet\",\"inputs\":[{\"name\":\"timestamps\",\"type\":\"uint256[]\",\"internalType\":\"uint256[]\"},{\"name\":\"blockNumber\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"blockBets\",\"inputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[{\"name\":\"bettedAt\",\"type\":\"uint96\",\"internalType\":\"uint96\"},{\"name\":\"bettor\",\"type\":\"address\",\"internalType\":\"address\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"blockTimestamps\",\"inputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"convertToBigEndian\",\"inputs\":[{\"name\":\"bytesLE\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"stateMutability\":\"pure\"},{\"type\":\"function\",\"name\":\"convertToBytes32\",\"inputs\":[{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"pure\"},{\"type\":\"function\",\"name\":\"doubleHash\",\"inputs\":[{\"name\":\"data\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"}],\"stateMutability\":\"pure\"},{\"type\":\"function\",\"name\":\"latestBlock\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"parseBlockHeader\",\"inputs\":[{\"name\":\"blockHeader\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"parsedHeader\",\"type\":\"tuple\",\"internalType\":\"structTickBit.BlockHeader\",\"components\":[{\"name\":\"merkleRootHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"nBits\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"nonce\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"previousBlockHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"timestamp\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"version\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"}]}],\"stateMutability\":\"pure\"},{\"type\":\"function\",\"name\":\"pools\",\"inputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[{\"name\":\"acruedAmount\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"settledAt\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"tickSize\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"token\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"contractERC20\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"verifiedBlocks\",\"inputs\":[{\"name\":\"\",\"type\":\"uint256\",\"internalType\":\"uint256\"}],\"outputs\":[{\"name\":\"merkleRootHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"nBits\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"nonce\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"previousBlockHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"timestamp\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"version\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"verifier\",\"inputs\":[],\"outputs\":[{\"name\":\"\",\"type\":\"address\",\"internalType\":\"contractSXGVerifier\"}],\"stateMutability\":\"view\"},{\"type\":\"function\",\"name\":\"verifyAndSettleBlock\",\"inputs\":[{\"name\":\"blockNumber\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"blockHeader\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"proof\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[],\"stateMutability\":\"nonpayable\"},{\"type\":\"function\",\"name\":\"verifyBlock\",\"inputs\":[{\"name\":\"blockNumber\",\"type\":\"uint256\",\"internalType\":\"uint256\"},{\"name\":\"blockHeader\",\"type\":\"bytes\",\"internalType\":\"bytes\"},{\"name\":\"proof\",\"type\":\"bytes\",\"internalType\":\"bytes\"}],\"outputs\":[{\"name\":\"header\",\"type\":\"tuple\",\"internalType\":\"structTickBit.BlockHeader\",\"components\":[{\"name\":\"merkleRootHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"nBits\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"nonce\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"previousBlockHash\",\"type\":\"bytes32\",\"internalType\":\"bytes32\"},{\"name\":\"timestamp\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"},{\"name\":\"version\",\"type\":\"bytes4\",\"internalType\":\"bytes4\"}]}],\"stateMutability\":\"view\"},{\"type\":\"event\",\"name\":\"BetPlaced\",\"inputs\":[{\"name\":\"addr\",\"type\":\"address\",\"indexed\":true,\"internalType\":\"address\"},{\"name\":\"blockNumber\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"timestamps\",\"type\":\"uint256[]\",\"indexed\":false,\"internalType\":\"uint256[]\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"},{\"name\":\"placedAt\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false},{\"type\":\"event\",\"name\":\"BlockSettled\",\"inputs\":[{\"name\":\"blockNumber\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"winningTimestamp\",\"type\":\"uint256\",\"indexed\":true,\"internalType\":\"uint256\"},{\"name\":\"winners\",\"type\":\"address[]\",\"indexed\":false,\"internalType\":\"address[]\"},{\"name\":\"amount\",\"type\":\"uint256\",\"indexed\":false,\"internalType\":\"uint256\"}],\"anonymous\":false}]",
 }
 
 // TickBitABI is the input ABI used to generate the binding from.
@@ -832,12 +832,13 @@ type TickBitBetPlaced struct {
 	BlockNumber *big.Int
 	Timestamps  []*big.Int
 	Amount      *big.Int
+	PlacedAt    *big.Int
 	Raw         types.Log // Blockchain specific contextual infos
 }
 
-// FilterBetPlaced is a free log retrieval operation binding the contract event 0xf05a1393f3f7a79fabc31d47f94d644ed6ec5f80c12258ac176f612ed97360e3.
+// FilterBetPlaced is a free log retrieval operation binding the contract event 0xf37aa579416eb34cf55eb9184ceef697a8034800e52ddfbdc55c4c076167ac05.
 //
-// Solidity: event BetPlaced(address indexed addr, uint256 indexed blockNumber, uint256[] timestamps, uint256 amount)
+// Solidity: event BetPlaced(address indexed addr, uint256 indexed blockNumber, uint256[] timestamps, uint256 amount, uint256 placedAt)
 func (_TickBit *TickBitFilterer) FilterBetPlaced(opts *bind.FilterOpts, addr []common.Address, blockNumber []*big.Int) (*TickBitBetPlacedIterator, error) {
 
 	var addrRule []interface{}
@@ -856,9 +857,9 @@ func (_TickBit *TickBitFilterer) FilterBetPlaced(opts *bind.FilterOpts, addr []c
 	return &TickBitBetPlacedIterator{contract: _TickBit.contract, event: "BetPlaced", logs: logs, sub: sub}, nil
 }
 
-// WatchBetPlaced is a free log subscription operation binding the contract event 0xf05a1393f3f7a79fabc31d47f94d644ed6ec5f80c12258ac176f612ed97360e3.
+// WatchBetPlaced is a free log subscription operation binding the contract event 0xf37aa579416eb34cf55eb9184ceef697a8034800e52ddfbdc55c4c076167ac05.
 //
-// Solidity: event BetPlaced(address indexed addr, uint256 indexed blockNumber, uint256[] timestamps, uint256 amount)
+// Solidity: event BetPlaced(address indexed addr, uint256 indexed blockNumber, uint256[] timestamps, uint256 amount, uint256 placedAt)
 func (_TickBit *TickBitFilterer) WatchBetPlaced(opts *bind.WatchOpts, sink chan<- *TickBitBetPlaced, addr []common.Address, blockNumber []*big.Int) (event.Subscription, error) {
 
 	var addrRule []interface{}
@@ -902,12 +903,167 @@ func (_TickBit *TickBitFilterer) WatchBetPlaced(opts *bind.WatchOpts, sink chan<
 	}), nil
 }
 
-// ParseBetPlaced is a log parse operation binding the contract event 0xf05a1393f3f7a79fabc31d47f94d644ed6ec5f80c12258ac176f612ed97360e3.
+// ParseBetPlaced is a log parse operation binding the contract event 0xf37aa579416eb34cf55eb9184ceef697a8034800e52ddfbdc55c4c076167ac05.
 //
-// Solidity: event BetPlaced(address indexed addr, uint256 indexed blockNumber, uint256[] timestamps, uint256 amount)
+// Solidity: event BetPlaced(address indexed addr, uint256 indexed blockNumber, uint256[] timestamps, uint256 amount, uint256 placedAt)
 func (_TickBit *TickBitFilterer) ParseBetPlaced(log types.Log) (*TickBitBetPlaced, error) {
 	event := new(TickBitBetPlaced)
 	if err := _TickBit.contract.UnpackLog(event, "BetPlaced", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// TickBitBlockSettledIterator is returned from FilterBlockSettled and is used to iterate over the raw logs and unpacked data for BlockSettled events raised by the TickBit contract.
+type TickBitBlockSettledIterator struct {
+	Event *TickBitBlockSettled // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *TickBitBlockSettledIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(TickBitBlockSettled)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(TickBitBlockSettled)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *TickBitBlockSettledIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *TickBitBlockSettledIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// TickBitBlockSettled represents a BlockSettled event raised by the TickBit contract.
+type TickBitBlockSettled struct {
+	BlockNumber      *big.Int
+	WinningTimestamp *big.Int
+	Winners          []common.Address
+	Amount           *big.Int
+	Raw              types.Log // Blockchain specific contextual infos
+}
+
+// FilterBlockSettled is a free log retrieval operation binding the contract event 0x05d5dfcfa4aafe97603465445fe2436ed9cf862f9bb74139eb3a59472a422f7a.
+//
+// Solidity: event BlockSettled(uint256 indexed blockNumber, uint256 indexed winningTimestamp, address[] winners, uint256 amount)
+func (_TickBit *TickBitFilterer) FilterBlockSettled(opts *bind.FilterOpts, blockNumber []*big.Int, winningTimestamp []*big.Int) (*TickBitBlockSettledIterator, error) {
+
+	var blockNumberRule []interface{}
+	for _, blockNumberItem := range blockNumber {
+		blockNumberRule = append(blockNumberRule, blockNumberItem)
+	}
+	var winningTimestampRule []interface{}
+	for _, winningTimestampItem := range winningTimestamp {
+		winningTimestampRule = append(winningTimestampRule, winningTimestampItem)
+	}
+
+	logs, sub, err := _TickBit.contract.FilterLogs(opts, "BlockSettled", blockNumberRule, winningTimestampRule)
+	if err != nil {
+		return nil, err
+	}
+	return &TickBitBlockSettledIterator{contract: _TickBit.contract, event: "BlockSettled", logs: logs, sub: sub}, nil
+}
+
+// WatchBlockSettled is a free log subscription operation binding the contract event 0x05d5dfcfa4aafe97603465445fe2436ed9cf862f9bb74139eb3a59472a422f7a.
+//
+// Solidity: event BlockSettled(uint256 indexed blockNumber, uint256 indexed winningTimestamp, address[] winners, uint256 amount)
+func (_TickBit *TickBitFilterer) WatchBlockSettled(opts *bind.WatchOpts, sink chan<- *TickBitBlockSettled, blockNumber []*big.Int, winningTimestamp []*big.Int) (event.Subscription, error) {
+
+	var blockNumberRule []interface{}
+	for _, blockNumberItem := range blockNumber {
+		blockNumberRule = append(blockNumberRule, blockNumberItem)
+	}
+	var winningTimestampRule []interface{}
+	for _, winningTimestampItem := range winningTimestamp {
+		winningTimestampRule = append(winningTimestampRule, winningTimestampItem)
+	}
+
+	logs, sub, err := _TickBit.contract.WatchLogs(opts, "BlockSettled", blockNumberRule, winningTimestampRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(TickBitBlockSettled)
+				if err := _TickBit.contract.UnpackLog(event, "BlockSettled", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseBlockSettled is a log parse operation binding the contract event 0x05d5dfcfa4aafe97603465445fe2436ed9cf862f9bb74139eb3a59472a422f7a.
+//
+// Solidity: event BlockSettled(uint256 indexed blockNumber, uint256 indexed winningTimestamp, address[] winners, uint256 amount)
+func (_TickBit *TickBitFilterer) ParseBlockSettled(log types.Log) (*TickBitBlockSettled, error) {
+	event := new(TickBitBlockSettled)
+	if err := _TickBit.contract.UnpackLog(event, "BlockSettled", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log
