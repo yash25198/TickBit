@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math/big"
 	"net/http"
 	"os"
 	"os/exec"
@@ -17,6 +18,7 @@ import (
 
 	"github.com/WICG/webpackage/go/signedexchange"
 	"github.com/WICG/webpackage/go/signedexchange/version"
+	"github.com/crema-labs/sxg-go/pkg/ethereum"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )
@@ -99,8 +101,9 @@ func bytesToIntSlice(b []byte) []int {
 }
 
 type HandleProofRequest struct {
-	Logger  *zap.Logger
-	PrivKey string
+	TBClient ethereum.TBClient
+	Logger   *zap.Logger
+	PrivKey  string
 }
 
 func NewHandleProofRequest(logger *zap.Logger, privKey string) *HandleProofRequest {
@@ -121,6 +124,39 @@ func extractTrackingID(logContent string) string {
 		}
 	}
 	return ""
+}
+
+func (hp *HandleProofRequest) HandleDeets(c *gin.Context) {
+	blockNumber := c.Query("block_number")
+	bn, ok := new(big.Int).SetString(blockNumber, 10)
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "bn should be valid number",
+		})
+		return
+	}
+
+	bets, err := hp.TBClient.GetBets(c, bn)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	pool, err := hp.TBClient.GetPoolValue(c, bn)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"bets": bets,
+		"pool": pool,
+	})
+
 }
 
 func (hp *HandleProofRequest) ProofStatus(blockNumber uint64) (StatusResponse, error) {
