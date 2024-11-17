@@ -47,7 +47,7 @@ TickBit introduces an engaging betting mechanism where users can wager on the pr
 
 TickBit leverages Google’s SXG protocol to ensure privacy-preserving prefetched content verification. SXG enables relayers to fetch critical resources (like HTML, JavaScript, or Bitcoin block hashes) from a website while ensuring authenticity through:
 
--   **Verification of SXG Signatures**: Using the server’s `secp256r1` TLS certificate.
+-   **Verification of SXG Signatures**: Using the server’s `secp256r1` TLS certificate. Contracts for verification can be found here : https://github.com/crema-labs/sxg-sp1/blob/feat-bitbet/contracts/src/Sxg.sol
 -   **Content Integrity Validation**: Via the MICE (Merkle Integrity Content Encoding) standard and the `mi-sha256` hash function.
 
 This guarantees the content retrieved from [cryptoid.info](https://cryptoid.info) is cryptographically verified off-chain before generating a proof.
