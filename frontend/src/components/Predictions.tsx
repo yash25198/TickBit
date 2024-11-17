@@ -104,7 +104,8 @@ const Predictions = () => {
                                                 >
                                                     {formatDistanceToNow(
                                                         new Date(
-                                                            prediction.timestamp
+                                                            prediction.timestamp *
+                                                                1000
                                                         ),
                                                         { addSuffix: true }
                                                     )}
@@ -114,12 +115,14 @@ const Predictions = () => {
                                                 Predicted:{" "}
                                                 <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-transparent bg-clip-text animate-gradient">
                                                     {formatDate(
-                                                        prediction.timestamp1,
+                                                        prediction.timestamp1 *
+                                                            1000,
                                                         "dd/MM/yyyy HH:mm:ss"
                                                     )}{" "}
                                                     -{" "}
                                                     {formatDate(
-                                                        prediction.timestamp2,
+                                                        prediction.timestamp2 *
+                                                            1000,
                                                         "dd/MM/yyyy HH:mm:ss"
                                                     )}
                                                 </span>

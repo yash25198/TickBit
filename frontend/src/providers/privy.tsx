@@ -47,7 +47,7 @@ export default function Privyprovider({
 }) {
     return (
         <PrivyProvider
-            appId="cm3jk7wbx00b9vmvuysteb3j4"
+            appId="cm3kpzk4200ez9ax99of5rofk"
             config={{
                 defaultChain: celoAlfajores,
                 supportedChains: networks,

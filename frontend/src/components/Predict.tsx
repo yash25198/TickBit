@@ -106,6 +106,7 @@ const Predict = () => {
     };
 
     const submitPrediction = async () => {
+        console.log(wallet, ready, tokenInfo);
         if (!wallet || !ready || !tokenInfo) return;
         if (
             !(
@@ -179,13 +180,20 @@ const Predict = () => {
         const data = encodeFunctionData({
             abi: tickBitAbi,
             functionName: "bet",
-            args: [timestamps, blocks[predictionBlockIndex].height],
+            args: [
+                timestamps.map((timestamp) => BigInt(timestamp)),
+                blocks[predictionBlockIndex].height,
+            ],
         });
+
+        console.log([timestamps, blocks[predictionBlockIndex].height]);
 
         const transactionRequest = {
             to: contractAddress as `0x${string}`,
             data,
         };
+
+        console.log(transactionRequest);
 
         const txHash = await walletClient.sendTransaction({
             ...transactionRequest,
@@ -198,7 +206,7 @@ const Predict = () => {
                 {
                     Timestamps: timestamps,
                     Addr: wallet.address as `0x${string}`,
-                    PlacedAt: Date.now(),
+                    PlacedAt: Date.now() / 1000,
                     Raw: { transactionHash: txHash },
                 },
             ];
