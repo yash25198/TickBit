@@ -15,6 +15,7 @@
     <li><a href="#screenshots">Screenshots</a></li>
     <li><a href="#key-features">Key Features</a></li>
     <li><a href="#project-setup">Project Setup</a></li>
+    <li><a href=#deloyments>Deployments</a></li>
     </li>
   </ol>
 
@@ -99,5 +100,30 @@ This ensures that every element in the data stream is cryptographically linked t
 5. Terminal 2 : `go run ./cmd/relay/relay.go`
 
 <p align="right">(<a href="#table-of-contents">back to top</a>)</p>
+
+## Deployments
+ ```
+        "44787": {
+            "TB_ADDRESS": "0xfb8cf1e65b8d5a699ffa86235941319d44156701"
+        },
+        "23295": {
+            "TB_ADDRESS": "0x07105F2BFf5297352F5d7012aD1D9D49a54BDE9E"
+        },
+        "48899": {
+            "TB_ADDRESS": "0x6FD83f25F7DFe95e1e4d5f7cee9a85f1938e0E5D"
+        },
+        "84532": {
+            "TB_ADDRESS": "0x6FD83f25F7DFe95e1e4d5f7cee9a85f1938e0E5D"
+        },
+        "2442": {
+            "TB_ADDRESS": "0x6FD83f25F7DFe95e1e4d5f7cee9a85f1938e0E5D"
+        },
+        "534351": {
+            "TB_ADDRESS": "0x6FD83f25F7DFe95e1e4d5f7cee9a85f1938e0E5D"
+        },
+        "30": {
+            "TB_ADDRESS": "0x6FD83f25F7DFe95e1e4d5f7cee9a85f1938e0E5D"
+        }
+```
 
 <p align="center">Made with ❤️ at ETH Bangkok</p>
